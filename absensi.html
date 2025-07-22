@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absensi Harian - SMKN 1 TAMBAKSARI</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="absensi-page">
+    <div class="container">
+        <header class="page-header">
+            <a href="./main.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Kembali ke Dashboard
+            </a>
+            <div class="header-title">
+                <h1><i class="fas fa-calendar-check"></i> Absensi Harian</h1>
+                <p class="header-subtitle">Sistem Absensi Digital SMKN 1 Tambaksari</p>
+            </div>
+        </header>
+
+        <div class="form-card">
+            <div class="form-header">
+                <div class="form-title">
+                    <h2><i class="fas fa-user-check"></i> Form Absensi Hari Ini</h2>
+                    <div class="current-date">
+                        <i class="fas fa-calendar-day"></i>
+                        <span id="currentDate"></span>
+                    </div>
+                </div>
+                <div class="form-status">
+                    <div class="status-indicator" id="statusIndicator">
+                        <i class="fas fa-clock"></i>
+                        <span>Siap untuk absensi</span>
+                    </div>
+                </div>
+            </div>
+            
+            <form id="absensiForm">
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="absensiNama">
+                            <i class="fas fa-user"></i> Nama Lengkap
+                        </label>
+                        <input type="text" id="absensiNama" readonly style="cursor: not-allowed; background: #f8f9fa;">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="absensiKelas">
+                            <i class="fas fa-graduation-cap"></i> Kelas
+                        </label>
+                        <input type="text" id="absensiKelas" readonly style="cursor: not-allowed; background: #f8f9fa;">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="absensiPelajaran">
+                        <i class="fas fa-book"></i> Mata Pelajaran
+                    </label>
+                    <select id="absensiPelajaran" required>
+                        <option value="">-- Pilih Mata Pelajaran --</option>
+                        <!-- Opsi pelajaran akan dimuat oleh JavaScript -->
+                    </select>
+                    <div class="input-helper">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Pilih mata pelajaran sesuai jadwal kelas Anda</span>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="absensiKeterangan">
+                        <i class="fas fa-clipboard-check"></i> Keterangan Kehadiran
+                    </label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="hadir" name="keterangan" value="Hadir">
+                            <label for="hadir" class="radio-label hadir">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Hadir</span>
+                            </label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="izin" name="keterangan" value="Izin">
+                            <label for="izin" class="radio-label izin">
+                                <i class="fas fa-hand-paper"></i>
+                                <span>Izin</span>
+                            </label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="sakit" name="keterangan" value="Sakit">
+                            <label for="sakit" class="radio-label sakit">
+                                <i class="fas fa-thermometer-half"></i>
+                                <span>Sakit</span>
+                            </label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="alpha" name="keterangan" value="Alpha">
+                            <label for="alpha" class="radio-label alpha">
+                                <i class="fas fa-times-circle"></i>
+                                <span>Alpha</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="input-group hidden" id="alasanGroup">
+                    <label for="absensiAlasan">
+                        <i class="fas fa-comment-alt"></i> Alasan (jika Izin/Sakit/Alpha)
+                    </label>
+                    <textarea id="absensiAlasan" rows="3" placeholder="Jelaskan alasan Anda dengan detail..."></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-paper-plane"></i> 
+                        <span>Simpan Absensi</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="success-message hidden" id="successMessage">
+            <div class="success-content">
+                <div class="success-animation">
+                    <div class="success-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+                <h3>Absensi Berhasil Disimpan!</h3>
+                <p>Data absensi Anda telah tercatat dalam sistem pada <span id="successTime"></span></p>
+                <div class="success-details" id="successDetails">
+                    <!-- Detail absensi akan ditampilkan di sini -->
+                </div>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <div class="info-header">
+                <i class="fas fa-info-circle"></i>
+                <h3>Informasi Penting</h3>
+            </div>
+            <div class="info-content">
+                <ul>
+                    <li><i class="fas fa-clock"></i> Absensi dapat dilakukan sesuai jadwal mata pelajaran</li>
+                    <li><i class="fas fa-mobile-alt"></i> Pastikan koneksi internet stabil saat mengisi absensi</li>
+                    <li><i class="fas fa-shield-alt"></i> Data absensi akan tersimpan secara otomatis dan aman</li>
+                    <li><i class="fas fa-bell"></i> Hubungi guru jika mengalami kendala teknis</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading-overlay hidden" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h3>Menyimpan Data Absensi</h3>
+            <p>Mohon tunggu sebentar...</p>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="./firebase-config.js"></script>
+    <script src="./script.js"></script>
+</body>
+</html>
+

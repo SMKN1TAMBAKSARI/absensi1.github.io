@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SMKN 1 TAMBAKSARI</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="main-page">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="./bg1.png" alt="Profile" class="profile-image">
+            <h3 id="userName">Nama Guru</h3>
+            <p id="userRole">Guru / Pengajar</p>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-page="dashboard">
+                <i class="fas fa-tachometer-alt"></i><span>Dashboard</span>
+            </a>
+            <a href="./absensi.html" class="nav-item">
+                <i class="fas fa-calendar-check"></i><span>Absensi Siswa</span>
+            </a>
+            <a href="#" class="nav-item" data-page="pelajaran">
+                <i class="fas fa-book-open"></i><span>Manajemen Pelajaran</span>
+            </a>
+            <a href="#" class="nav-item" data-page="izin">
+                <i class="fas fa-file-alt"></i><span>Formulir Izin/Sakit</span>
+            </a>
+            <a href="#" class="nav-item" id="adminAccess">
+                <i class="fas fa-history"></i><span>Riwayat Absensi</span>
+            </a>
+            <a href="#" class="nav-item" data-page="tentang">
+                <i class="fas fa-info-circle"></i><span>Tentang</span>
+            </a>
+            <a href="#" class="nav-item" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i><span>Keluar</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <p>SMKN 1 Tambaksari &copy; 2024</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header class="main-header">
+            <button class="hamburger" id="hamburger">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h1>Dashboard Guru</h1>
+            <div class="header-actions">
+                <div class="current-time" id="currentTime"></div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="content-section" id="dashboardContent">
+            <div class="welcome-card">
+                <div class="welcome-content">
+                    <h2>Selamat Datang, <span id="welcomeUserName">Guru</span>!</h2>
+                    <p>Kelola absensi dan jadwal pelajaran dengan mudah melalui panel ini.</p>
+                </div>
+                <div class="welcome-illustration">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon-wrapper">
+                        <i class="fas fa-users stat-icon"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Kehadiran Hari Ini</h3>
+                        <div class="stat-number" id="todayAttendance">-</div>
+                        <p class="stat-desc">Total siswa hadir hari ini</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon-wrapper">
+                        <i class="fas fa-user-times stat-icon"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Total Izin/Sakit</h3>
+                        <div class="stat-number" id="totalAbsence">-</div>
+                        <p class="stat-desc">Akumulasi formulir</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon-wrapper">
+                        <i class="fas fa-calendar-alt stat-icon"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Jadwal Aktif</h3>
+                        <div class="stat-number" id="activeSchedules">5</div>
+                        <p class="stat-desc">Total jadwal pelajaran</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <h3>Aksi Cepat</h3>
+                <div class="action-buttons">
+                    <button class="action-btn" data-page="pelajaran">
+                        <i class="fas fa-plus"></i>
+                        <span>Tambah Jadwal</span>
+                    </button>
+                    <button class="action-btn" onclick="window.location.href='./absensi.html'">
+                        <i class="fas fa-check"></i>
+                        <span>Lihat Absensi</span>
+                    </button>
+                    <button class="action-btn" id="adminAccess2">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Laporan</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manajemen Pelajaran Content -->
+        <div class="content-section hidden" id="pelajaranContent">
+            <div class="page-title">
+                <h2><i class="fas fa-book-open"></i> Manajemen Jadwal Pelajaran</h2>
+                <p class="page-subtitle">Atur jadwal pelajaran untuk setiap kelas. Siswa hanya akan melihat mata pelajaran yang sesuai dengan jadwal kelasnya saat melakukan absensi.</p>
+            </div>
+
+            <div class="form-card">
+                <div class="form-header">
+                    <h3><i class="fas fa-plus-circle"></i> Tambah Jadwal Baru</h3>
+                </div>
+                <form id="pelajaranForm">
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="pilihKelas">Pilih Kelas</label>
+                            <select id="pilihKelas" required>
+                                <option value="">-- Pilih Kelas --</option>
+                                <option value="X TKRO">X TKRO</option>
+                                <option value="X APHP">X APHP</option>
+                                <option value="XI TKRO">XI TKRO</option>
+                                <option value="XI APHP">XI APHP</option>
+                                <option value="XII TKRO">XII TKRO</option>
+                                <option value="XII APHP">XII APHP</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="mataPelajaran">Mata Pelajaran</label>
+                            <input type="text" id="mataPelajaran" placeholder="Contoh: Matematika Wajib" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="jamMulai">Jam Mulai</label>
+                            <input type="time" id="jamMulai" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="jamAkhir">Jam Akhir</label>
+                            <input type="time" id="jamAkhir" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="hariPelajaran">Hari</label>
+                        <select id="hariPelajaran" required>
+                            <option value="">-- Pilih Hari --</option>
+                            <option value="Senin">Senin</option>
+                            <option value="Selasa">Selasa</option>
+                            <option value="Rabu">Rabu</option>
+                            <option value="Kamis">Kamis</option>
+                            <option value="Jumat">Jumat</option>
+                            <option value="Sabtu">Sabtu</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Simpan Jadwal
+                    </button>
+                </form>
+            </div>
+
+            <div class="data-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-list-alt"></i> Daftar Jadwal Pelajaran</h3>
+                    <div class="filter-controls">
+                        <select id="filterKelas" class="filter-select">
+                            <option value="">Semua Kelas</option>
+                            <option value="X TKRO">X TKRO</option>
+                            <option value="X APHP">X APHP</option>
+                            <option value="XI TKRO">XI TKRO</option>
+                            <option value="XI APHP">XI APHP</option>
+                            <option value="XII TKRO">XII TKRO</option>
+                            <option value="XII APHP">XII APHP</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Kelas</th>
+                                <th>Mata Pelajaran</th>
+                                <th>Hari</th>
+                                <th>Jam Mulai</th>
+                                <th>Jam Akhir</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="jadwalTableBody">
+                            <tr><td colspan="6" class="no-data">Memuat jadwal...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Izin/Sakit Form Content -->
+        <div class="content-section hidden" id="izinContent">
+            <div class="page-title">
+                <h2><i class="fas fa-file-alt"></i> Formulir Izin/Sakit</h2>
+                <p class="page-subtitle">Form untuk mengajukan izin atau melaporkan sakit</p>
+            </div>
+            <div class="form-card">
+                <form id="izinForm">
+                    <div class="input-group">
+                        <label for="izinNama">Nama Lengkap</label>
+                        <input type="text" id="izinNama" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="izinJenis">Jenis</label>
+                        <select id="izinJenis" required>
+                            <option value="">Pilih Jenis</option>
+                            <option value="Izin">Izin</option>
+                            <option value="Sakit">Sakit</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="izinTanggal">Tanggal</label>
+                        <input type="date" id="izinTanggal" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="izinDeskripsi">Deskripsi/Alasan</label>
+                        <textarea id="izinDeskripsi" rows="4" placeholder="Jelaskan alasan izin/sakit..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-paper-plane"></i> Kirim Formulir
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tentang Content -->
+        <div class="content-section hidden" id="tentangContent">
+            <div class="about-container">
+                <div class="school-profile-card">
+                    <div class="school-profile-header">
+                        <img src="./bg1.png" alt="SMKN 1 TAMBAKSARI" class="school-profile-logo">
+                        <div class="school-profile-info">
+                            <h2>SMKN 1 TAMBAKSARI</h2>
+                            <p class="school-tagline">Sekolah Menengah Kejuruan Negeri 1 Tambaksari</p>
+                        </div>
+                    </div>
+                    
+                    <div class="school-description">
+                        <h3>Tentang Sekolah</h3>
+                        <p>SMKN 1 TAMBAKSARI adalah sekolah menengah kejuruan yang berkomitmen untuk menghasilkan lulusan yang kompeten, berkarakter, dan siap menghadapi tantangan dunia kerja. Dengan fasilitas modern dan tenaga pengajar yang profesional, kami terus berinovasi dalam memberikan pendidikan terbaik.</p>
+                        
+                        <div class="school-vision">
+                            <h4>Visi</h4>
+                            <p>Menjadi SMK unggul yang menghasilkan lulusan berkarakter, kompeten, dan berdaya saing global.</p>
+                        </div>
+                        
+                        <div class="school-mission">
+                            <h4>Misi</h4>
+                            <ul>
+                                <li>Menyelenggarakan pendidikan kejuruan yang berkualitas</li>
+                                <li>Mengembangkan karakter siswa yang berakhlak mulia</li>
+                                <li>Mempersiapkan lulusan yang siap kerja dan berwirausaha</li>
+                                <li>Menjalin kerjasama dengan dunia usaha dan industri</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="social-media-card">
+                    <h3>Ikuti Media Sosial Kami</h3>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/smknestari.ofc/?utm_source=ig_web_button_share_sheet" target="_blank" class="social-link instagram">
+                            <i class="fab fa-instagram"></i>
+                            <div class="social-info">
+                                <strong>Instagram</strong>
+                                <p>@smknestari.ofc</p>
+                            </div>
+                        </a>
+                        
+                        <a href="https://www.tiktok.com/@smknestari.ofc?_t=ZS-8xaSRwgJkij&_r=1" target="_blank" class="social-link tiktok">
+                            <i class="fab fa-tiktok"></i>
+                            <div class="social-info">
+                                <strong>TikTok</strong>
+                                <p>@smknestari.ofc</p>
+                            </div>
+                        </a>
+                        
+                        <a href="https://youtube.com/@smkn1tambaksari?si=agD0cS59lXGTy2vw" target="_blank" class="social-link youtube">
+                            <i class="fab fa-youtube"></i>
+                            <div class="social-info">
+                                <strong>YouTube</strong>
+                                <p>SMKN 1 Tambaksari</p>
+                            </div>
+                        </a>
+                        
+                        <a href="https://www.facebook.com/share/16XaFzNXeL/" target="_blank" class="social-link facebook">
+                            <i class="fab fa-facebook"></i>
+                            <div class="social-info">
+                                <strong>Facebook</strong>
+                                <p>SMKN 1 Tambaksari</p>
+                            </div>
+                        </a>
+                        
+                        <a href="mailto:smkn1tambaksari@gmail.com" class="social-link email">
+                            <i class="fas fa-envelope"></i>
+                            <div class="social-info">
+                                <strong>Email</strong>
+                                <p>smkn1tambaksari@gmail.com</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="developer-credit">
+                    <div class="credit-content">
+                        <h4>Pengembang Website</h4>
+                        <p class="developer-name">Made by <strong>Imam Mulmuthaqim</strong> Development</p>
+                        <p class="credit-description">Sistem Absensi Digital untuk SMKN 1 TAMBAKSARI</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Password Modal -->
+    <div class="modal-overlay hidden" id="adminModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Login Admin</h3>
+                <button class="modal-close" id="closeAdminModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label for="adminPassword">Kata Sandi Admin</label>
+                    <input type="password" id="adminPassword" placeholder="Masukkan kata sandi admin..." required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancelAdmin">Batal</button>
+                    <button type="button" class="btn-primary" id="submitAdmin">Masuk</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading-overlay hidden" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <p>Memproses...</p>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="./firebase-config.js"></script>
+    <script src="./script.js"></script>
+</body>
+</html>
+
